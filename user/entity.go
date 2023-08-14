@@ -8,7 +8,7 @@ type User struct {
 	Email          string
 	Password       string
 	Occupation     string
-	AvatarFilename string
+	AvatarFileName string
 	Role           string
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

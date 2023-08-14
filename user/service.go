@@ -35,7 +35,7 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 
 	user.Password = string(passwordHash)
 	user.Role = "user"
-	user.AvatarFilename = "default.jpg"
+	user.AvatarFileName = "default.jpg"
 
 	newUser, err := s.repository.Save(user)
 
@@ -90,7 +90,7 @@ func (s *service) SaveAvatar(Id int, fileLocation string) (User, error) {
 		return user, err
 	}
 
-	user.AvatarFilename = fileLocation
+	user.AvatarFileName = fileLocation
 
 	updateUser, err := s.repository.Update(user)
 	if err != nil {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bwa_start_up/auth"
+	"bwa_start_up/campaign"
 	"bwa_start_up/handler"
 	"bwa_start_up/helper"
 	"bwa_start_up/user"
@@ -27,7 +28,10 @@ func main() {
 	}
 
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
+
 	userService := user.NewService(userRepository)
+	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
 	token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4fQ.lP8NxXCsv6DuYdd_rSWEvxsI5d__MahboLYain-rF8Tc")
@@ -38,6 +42,7 @@ func main() {
 	fmt.Println(token.Valid)
 
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 	userService.SaveAvatar(2, "images/profil.jpeg")
 
 	router := gin.Default()
@@ -47,6 +52,7 @@ func main() {
 	api.POST("/login", userHandler.Login)
 	api.POST("/check_email", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 	router.Run()
 }
 
